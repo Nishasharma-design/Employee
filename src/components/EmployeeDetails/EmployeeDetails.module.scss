@@ -1,0 +1,72 @@
+// EmployeeDetails.scss
+
+.employee_details {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .employee_details h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .employee_details .form_group {
+    margin-bottom: 15px;
+  }
+  
+  .employee_details label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .employee_details input,
+  .employee_details select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+  
+  .employee_details input[type="number"] {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+  }
+  
+  .employee_details .error {
+    color: red;
+    font-size: 14px;
+  }
+  
+  .employee_details button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 120px;
+    margin-top: 20px;
+  }
+  
+  .employee_details button:hover {
+    background-color: #0056b3;
+  }
+  
+  .employee_details .back_button {
+    background-color: #6c757d;
+  }
+  
+  .employee_details .back_button:hover {
+    background-color: #5a6268;
+  }
+  

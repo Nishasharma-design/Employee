@@ -1,14 +1,17 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import EmployeeList from "./components/EmployeeList/EmployeeList"
+import EmployeeDetails from "./components/EmployeeDetails/EmployeeDetails"
 
-
-import EmployeeList from './components/EmployeeList';
-
-function App() {
+const App = () => {
   return (
-    <div>
-      <h1>Employee Document</h1>
-      <EmployeeList />
-    </div>
-  )
-}
+    <BrowserRouter>
+     <Routes>
+      <Route path="/" element={<EmployeeList />} />
+      <Route path="/add-employee" element={<EmployeeDetails />} />
+      <Route path="/employees/:employeeId" element={<EmployeeDetails />} />
+     </Routes>
+    </BrowserRouter>
+  );
+};
 
 export default App;
