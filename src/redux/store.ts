@@ -4,7 +4,7 @@ import employeeReducer from "./employeeSlice";
 
 const store = configureStore ({
     reducer: {
-        employee: employeeReducer, // this links employee slice to store
+        employee: employeeReducer, 
     },
 });
 

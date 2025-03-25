@@ -1,19 +1,19 @@
 import axios from "axios";
-import { Employee } from "../redux/employeeSlice"; // Import the Employee type
+import { Employee } from "../redux/employeeSlice"; 
 
 export const fetchEmployees = async () => {
     const response = await axios.get("http://localhost:8080/employees");
-    return response.data; // assuming your API returns an array of employees
+    return response.data; 
   };
 
-// Add Employee
-export const addEmployee = async (newEmployee: Employee): Promise<Employee> => {
+
+export const addEmployeeApi = async (newEmployee: Employee): Promise<Employee> => {
   const response = await axios.post("http://localhost:8080/employees", newEmployee);
   return response.data;
 };
 
-// Update Employee
-export const updateEmployee = async (updatedEmployee: Employee): Promise<Employee> => {
+
+export const updateEmployeeApi = async (updatedEmployee: Employee): Promise<Employee> => {
   const response = await axios.put(
     `http://localhost:8080/employees/${updatedEmployee.id}`,
     updatedEmployee
@@ -21,7 +21,7 @@ export const updateEmployee = async (updatedEmployee: Employee): Promise<Employe
   return response.data;
 };
 
-// Delete Employee
-export const removeEmployee = async (id: number): Promise<void> => {
+
+export const removeEmployeeApi = async (id: number): Promise<void> => {
   await axios.delete(`http://localhost:8080/employees/${id}`);
 };
