@@ -35,6 +35,7 @@ const employeeSlice = createSlice({
       removeEmployee: (state, action: PayloadAction<number>) => {
          state.employees = state.employees.filter(emp => emp.id !== action.payload);
       },
+      // this reducer sets the selected employee in Redux when a user clicks edit button
       setSelectedEmployee: (state, action: PayloadAction<Employee | null>) => {
          state.selectedEmployee = action.payload;
       },

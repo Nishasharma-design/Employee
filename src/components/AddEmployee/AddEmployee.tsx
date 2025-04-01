@@ -5,6 +5,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addEmployeeApi } from "../../api/employeeApi";
 import { Employee } from "../../redux/employeeSlice";
 import EmployeeForm from "../EmployeeForm/EmployeeForm";
+import { showToast } from "../../toast/toast";
+
+
 
 const AddEmployee = () => {
   const dispatch = useDispatch();
@@ -17,19 +20,21 @@ const AddEmployee = () => {
   const addEmployeeMutation = useMutation({
     mutationFn: addEmployeeApi,
     onSuccess: (newEmployee) => {
-      dispatch(addEmployee(newEmployee)); 
+      dispatch(addEmployee(newEmployee));  
       queryClient.invalidateQueries({ queryKey: ["employees"] });
       navigate("/"); 
+      showToast("Employee added successfully!", 'success');
     },
   });
 
   const onSubmit = (data: Employee) => {
-    console.log("Submitting Employee Data:", data);
-    addEmployeeMutation.mutate(data);
+    addEmployeeMutation.mutate(data); 
   };
 
   return (
     <EmployeeForm onSubmit={onSubmit} />
+   
+   
   )
 }
 

@@ -27,7 +27,7 @@ const EmployeeDetails = () => {
     const updateEmployeeMutation = useMutation({
       mutationFn: updateEmployeeApi,
       onSuccess: (updatedEmployee) => {
-        dispatch(updateEmployee(updatedEmployee));
+        dispatch(updateEmployee(updatedEmployee)); // this updates redux, ensuring UI updates
         queryClient.invalidateQueries({ queryKey: ["employees"] });
         navigate("/");
       },
@@ -35,7 +35,7 @@ const EmployeeDetails = () => {
   
     const onSubmit = (data: Employee) => {
       if (selectedEmployee) {
-        updateEmployeeMutation.mutate({ ...selectedEmployee, ...data });
+        updateEmployeeMutation.mutate({ ...selectedEmployee, ...data }); // calls API to update employee in database
       } else {
         addEmployeeMutation.mutate(data);
       }

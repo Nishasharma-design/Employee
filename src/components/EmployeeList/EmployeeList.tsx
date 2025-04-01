@@ -6,10 +6,13 @@ import classes from "./EmployeeList.module.scss";
 import { removeEmployee, setEmployees, setSelectedEmployee } from "../../redux/employeeSlice";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchEmployees, removeEmployeeApi } from "../../api/employeeApi";
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
+import { closeModal, openModal } from "../../redux/modalSlice";
 
 const EmployeeList = () => {
   const employees = useSelector((state: RootState) => state.employee.employees);
-  const queryClient = useQueryClient();
+  const modalState = useSelector((state: RootState) => state.modal);
+  const queryClient = useQueryClient(); // forces refreshing data after any update, add or edit
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,24 +22,25 @@ const EmployeeList = () => {
     queryFn: fetchEmployees,
   });
 
-  
+  // this part is making sure we are in sync with redux store with the API calls
   useEffect(() => {
     if (data) {
-      dispatch(setEmployees(data));
-    }
+      dispatch(setEmployees(data)); // useQuery stores employees only inside React Query's Cache
+    } // but we also want to store employees inside Redux, so we can access them from other parts of the app
   }, [data, dispatch]);
 
  
   const removeEmployeeMutation = useMutation({
     mutationFn: removeEmployeeApi,
     onSuccess: (_, id) => {
-      dispatch(removeEmployee(id));
+      dispatch(removeEmployee(id)); 
       queryClient.invalidateQueries({ queryKey: ["employees"] });
+      dispatch(closeModal());
     },
   });
 
   const handleRemove = (id: number) => {
-    removeEmployeeMutation.mutate(id);
+    removeEmployeeMutation.mutate(id); 
   };
 
   const handleAddEmployee = () => {
@@ -71,9 +75,19 @@ const EmployeeList = () => {
             <button className={classes.edit_button} onClick={() => handleEdit(employee.id)}>
               Edit
             </button>
-            <button className={classes.remove_button} onClick={() => handleRemove(employee.id)}>
+            <button className={classes.remove_button} onClick={() => dispatch(openModal(employee.id))}>
               Remove
             </button>
+            
+            {modalState.employeeId !== null && (
+  <DeleteConfirmationModal
+    isOpen={modalState.isOpen}
+    onClose={() => dispatch(closeModal())}
+    onConfirm={handleRemove}
+    id={modalState.employeeId} 
+  />
+)}
+
           </li>
         ))}
       </ul>
