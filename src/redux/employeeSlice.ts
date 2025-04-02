@@ -12,8 +12,8 @@ export interface Employee {
    contractType: 'permanent' | 'contract';
    startDate: string;
    finishDate: string;
-   fullTimeOrPartTime: string;
-   hoursPerWeek: number;
+   fullTimeOrPartTime: 'Full-Time' | 'Part-Time';
+   hoursPerWeek: number | "";
 }
 
 const initialState = {
