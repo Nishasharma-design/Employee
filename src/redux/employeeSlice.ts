@@ -39,6 +39,7 @@ const employeeSlice = createSlice({
       setSelectedEmployee: (state, action: PayloadAction<Employee | null>) => {
          state.selectedEmployee = action.payload;
       },
+
       updateEmployee: (state, action: PayloadAction<Employee>) => {
          const index = state.employees.findIndex(emp => emp.id === action.payload.id);
          if (index !== -1) {

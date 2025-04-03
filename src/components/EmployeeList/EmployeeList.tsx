@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchEmployees, removeEmployeeApi } from "../../api/employeeApi";
 import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
 import { closeModal, openModal } from "../../redux/modalSlice";
+import EmployeeFilter from "../EmployeeFilter/EmployeeFilter";
 
 const EmployeeList = () => {
   const employees = useSelector((state: RootState) => state.employee.employees);
@@ -16,6 +17,10 @@ const EmployeeList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [filter, setFilter] = useState("");
+
+
+  const filteredEmployees = employees.filter((employee) => !filter || employee.contractType === filter);
  
   const { data, error, isLoading } = useQuery({
     queryKey: ["employees"],
@@ -62,6 +67,7 @@ const EmployeeList = () => {
   return (
     <div className={classes.employee_list}>
       <h1>Employee List</h1>
+      <EmployeeFilter onFilterChange={setFilter}/>
       <p className={classes.message}>Please click on 'Edit' to find more details of each employee.</p>
 
       <button className={classes.add_button} onClick={handleAddEmployee}>
@@ -69,7 +75,7 @@ const EmployeeList = () => {
       </button>
 
       <ul>
-        {employees.map((employee) => (
+        {filteredEmployees.map((employee) => (
           <li key={employee.id}>
             {employee.firstName} {employee.lastName} - {employee.email}
             <button className={classes.edit_button} onClick={() => handleEdit(employee.id)}>
