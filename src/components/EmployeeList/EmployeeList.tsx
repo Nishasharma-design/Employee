@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import classes from "./EmployeeList.module.scss";
-import { removeEmployee, setEmployees, setSelectedEmployee } from "../../redux/employeeSlice";
+import { Employee, removeEmployee, setEmployees, setSelectedEmployee } from "../../redux/employeeSlice";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchEmployees, removeEmployeeApi } from "../../api/employeeApi";
 import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal";
@@ -13,26 +13,29 @@ import EmployeeFilter from "../EmployeeFilter/EmployeeFilter";
 const EmployeeList = () => {
   const employees = useSelector((state: RootState) => state.employee.employees);
   const modalState = useSelector((state: RootState) => state.modal);
-  const queryClient = useQueryClient(); // forces refreshing data after any update, add or edit
+  const queryClient = useQueryClient(); 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState("");
 
-
-  const filteredEmployees = employees.filter((employee) => !filter || employee.contractType === filter);
  
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["employees"],
-    queryFn: fetchEmployees,
+  const {
+    data,
+    error, 
+    isLoading,
+  } = useQuery<Employee[], Error>({
+    queryKey: ["employees", filter],
+    queryFn: () => fetchEmployees(filter),
   });
 
-  // this part is making sure we are in sync with redux store with the API calls
+
   useEffect(() => {
     if (data) {
-      dispatch(setEmployees(data)); // useQuery stores employees only inside React Query's Cache
-    } // but we also want to store employees inside Redux, so we can access them from other parts of the app
+      dispatch(setEmployees(data)); 
+    }
   }, [data, dispatch]);
+  
 
  
   const removeEmployeeMutation = useMutation({
@@ -75,7 +78,7 @@ const EmployeeList = () => {
       </button>
 
       <ul>
-        {filteredEmployees.map((employee) => (
+        {employees.map((employee) => (
           <li key={employee.id}>
             {employee.firstName} {employee.lastName} - {employee.email}
             <button className={classes.edit_button} onClick={() => handleEdit(employee.id)}>

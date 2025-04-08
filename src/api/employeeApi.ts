@@ -1,10 +1,14 @@
 import axios from "axios";
 import { Employee } from "../redux/employeeSlice"; 
 
-export const fetchEmployees = async () => {
-    const response = await axios.get("http://localhost:8080/employees");
-    return response.data; 
-  };
+export const fetchEmployees = async (filter: string): Promise<Employee[]> => {
+  const url = filter
+    ? `http://localhost:8080/employees?contractType=${filter}`
+    : "http://localhost:8080/employees";
+
+  const response = await axios.get<Employee[]>(url);
+  return response.data;
+};
 
 
 export const addEmployeeApi = async (newEmployee: Employee): Promise<Employee> => {
